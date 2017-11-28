@@ -4,25 +4,12 @@ CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 source "$CURRENT_DIR/scripts/helpers.sh"
 
-eth_interpolation=(
-	"\#{eth_price}"
-)
-eth_commands=(
-	"#($CURRENT_DIR/scripts/getethprice.sh)"
-)
+ethprice="#($CURRENT_DIR/scripts/getethprice.sh)"
 
 set_tmux_option() {
 	local option=$1
 	local value=$2
 	tmux set-option -gq "$option" "$value"
-}
-
-do_interpolation() {
-	local all_interpolated="$1"
-	for ((i=0; i<${#eth_commands[@]}; i++)); do
-		all_interpolated=${all_interpolated/${eth_interpolation[$i]}/${eth_commands[$i]}}
-	done
-	echo "$all_interpolated"
 }
 
 update_tmux_option() {
