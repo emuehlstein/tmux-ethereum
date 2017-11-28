@@ -2,9 +2,18 @@
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-source "$CURRENT_DIR/scripts/helpers.sh"
-
 ethprice="#($CURRENT_DIR/scripts/getethprice.sh)"
+
+get_tmux_option() {
+	local option="$1"
+	local default_value="$2"
+	local option_value="$(tmux show-option -gqv "$option")"
+	if [ -z "$option_value" ]; then
+		echo "$default_value"
+	else
+		echo "$option_value"
+	fi
+}
 
 set_tmux_option() {
 	local option=$1
