@@ -2,18 +2,15 @@
 
 CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-ethprice="#($CURRENT_DIR/scripts/getethprice.sh)"
+source "$CURRENT_DIR/scripts/helpers.sh"
 
-get_tmux_option() {
-	local option="$1"
-	local default_value="$2"
-	local option_value="$(tmux show-option -gqv "$option")"
-	if [ -z "$option_value" ]; then
-		echo "$default_value"
-	else
-		echo "$option_value"
-	fi
-}
+eth_interpolation=(
+	"\#{eth_price}"
+)
+
+eth_commands=(
+	"#($CURRENT_DIR/scripts/getethprice.sh)"
+)
 
 set_tmux_option() {
 	local option=$1
@@ -21,9 +18,18 @@ set_tmux_option() {
 	tmux set-option -gq "$option" "$value"
 }
 
+do_interpolation() {
+	local all_interpolated="$1"
+	for ((i=0; i<${#eth_commands[@]}; i++)); do
+		all_interpolated=${all_interpolated/${eth_interpolation[$i]}/${eth_commands[$i]}}
+	done
+	echo "$all_interpolated"
+}
+
 update_tmux_option() {
 	local option=$1
 	local option_value=$(get_tmux_option "$option")
+	local new_option_value=$(do_interpolation "$option_value")
 	set_tmux_option "$option" "$new_option_value"
 }
 
