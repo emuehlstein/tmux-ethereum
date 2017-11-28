@@ -49,4 +49,4 @@ Example:
 
 ### License
 
-[GPL3](LICENSE.md)
+[GPL3](LICENSE)
