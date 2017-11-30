@@ -4,6 +4,7 @@ import sys
 import json
 import requests
 
-currencydata = requests.get('https://api.coinmarketcap.com/v1/ticker/ethereum/')
-print int(round(float(json.load(currencydata)[0]["price_usd"])))'
-
+cryptorequest = requests.get('https://api.coinmarketcap.com/v1/ticker/ethereum/')
+currencyjson = json.loads(cryptorequest.text)
+wholedollarvalue = int(round(float(currencyjson[0]["price_usd"])))
+print(wholedollarvalue)
