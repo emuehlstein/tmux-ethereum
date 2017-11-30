@@ -1,4 +1,9 @@
-#!/usr/bin/env bash
+#!/usr/bin/env python3
 
-curl -s https://api.coinmarketcap.com/v1/ticker/ethereum/ |python -c 'import sys, json; print int(round(float(json.load(sys.stdin)[0]["price_usd"])))'
+import sys
+import json
+import requests
+
+currencydata = requests.get('https://api.coinmarketcap.com/v1/ticker/ethereum/')
+print int(round(float(json.load(currencydata)[0]["price_usd"])))'
 
